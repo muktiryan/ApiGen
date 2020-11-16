@@ -1,6 +1,7 @@
 package com.apis;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -10,7 +11,10 @@ import com.genesyslab.platform.applicationblocks.com.IConfService;
 import com.genesyslab.platform.applicationblocks.com.Subscription;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgCallingList;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgCallingListInfo;
+import com.genesyslab.platform.applicationblocks.com.objects.CfgCampaign;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgFormat;
+import com.genesyslab.platform.applicationblocks.com.objects.CfgPerson;
+import com.genesyslab.platform.applicationblocks.com.objects.CfgRole;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgTableAccess;
 import com.genesyslab.platform.applicationblocks.warmstandby.WarmStandbyService;
 import com.genesyslab.platform.commons.protocol.ProtocolException;
@@ -69,7 +73,7 @@ public class MainApi {
 //	        	apiGen.DeleteFormat(155);
 //	        	apiGen.GetAllFormat();
 	        	
-	        	
+//	        	apiGen.GetAllRoles();
 	        	
 //	        	System.out.println("########## Create TableAccess #################");
 ////	        	156 Format
@@ -98,7 +102,7 @@ public class MainApi {
 //	        	DB Access ID 119 (Kalo di gua)
 	        	
 	        	
-	        	
+//	        	apiGen.getAllSkill();
 	        	
 	        	
 //	        	CfgTableAccess result = apiGen.CreateNewTableAccess(apiGen, "INS_CGN_9091.TA", "Testing", 119, 106,
@@ -113,12 +117,35 @@ public class MainApi {
 //	        	ArrayList<ObjCfgFields> listFild = apiGen.GetAllFileds();
 //	        	apiGen.GetAllCallingList();
 //	        	Kartu Kredit Visa 230320
-	        	apiGen.CreateNewCampaign(apiGen, "Campign Test 1", "Test Doank", "Kartu Kredit Visa 230320", "INS_Cigna");
-	        	
+//	        	apiGen.CreateNewCampaign(apiGen, "Campign Test 1", "Test Doank", "Kartu Kredit Visa 230320", "INS_Cigna");
+//	        	CfgCampaign hasil= apiGen.UpdateCfgCampaign(apiGen, 0, "Campaign Cigna 280320", "Deskripsi Oncom Bandung", "Campaign Cigna 280320", "AccessGroup Kosong");
 //	        	apiGen.GetAllCampaign();
-	        	System.out.println("###########################################");
-	        
-	        	System.out.println("###########################################");
+	        	
+//	        	Collection<Integer> filedsIds = Arrays.asList(121);
+//	        	
+//	        	CfgFormat result = apiGen.UpdateFormat(apiGen, 102, "Default_DoNotContact_List", "Bareng Dirga", filedsIds, "");
+//	        	System.out.println("###########################################");
+//	        	apiGen.getAllFormat();
+//	        	apiGen.get
+//	        	System.out.println("########################################### "+ result.getDescription());
+//	        	CfgPerson result=  apiGen.CreateNewPerson("Memet2.Gorbacep", "mmt2@gmail.com", "Memet1", "Asep", true, "manage","mmt2@gmail.com", "100098870");
+//	        	apiGen.getAllPersons(); 
+//	        	135
+//	        	CfgPerson result = apiGen.GetPerson(136);
+//	        	System.out.println("############################### "+ result.getUserName());
+	        	
+//	        	CfgRole resultRole = apiGen.addUserToRoleByRoleName(result, "Supervisor", ""); //Karena sudah di lakukan sebelumnya harusnya
+	        	
+//	        	CfgPerson result3 = apiGen.CreateNewPersonSkill(result.getUserName(), "[Nama Skill]");//Skill tanya2 om Husain
+//	        	
+//	        	System.out.println("############################### "+ result.getDBID());
+//	        	CfgPerson result2 = apiGen.getPersonByNameUpdateAccessGroup(result.getDBID(), "INS_Cigna");
+	        	
+//	        	System.out.println("############################### "+ result2.getDBID());
+	        	
+//	        	apiGen.GetAllRoles();
+	        	apiGen.GetAllAgentGroup();
+	        	
 	            apiGen.disConnectProtocl(protocol);
 		     } else {
 		     	System.out.println("INI NGGA KONEK");

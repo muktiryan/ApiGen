@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,7 +20,9 @@ import com.genesyslab.platform.applicationblocks.com.ConfigException;
 import com.genesyslab.platform.applicationblocks.com.IConfService;
 import com.genesyslab.platform.applicationblocks.com.Subscription;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgAccessGroup;
+import com.genesyslab.platform.applicationblocks.com.objects.CfgAddress;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgAgentGroup;
+import com.genesyslab.platform.applicationblocks.com.objects.CfgAgentInfo;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgApplication;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgCallingList;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgCallingListInfo;
@@ -32,7 +35,13 @@ import com.genesyslab.platform.applicationblocks.com.objects.CfgField;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgFormat;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgID;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgPerson;
+import com.genesyslab.platform.applicationblocks.com.objects.CfgPhones;
+import com.genesyslab.platform.applicationblocks.com.objects.CfgPlace;
+import com.genesyslab.platform.applicationblocks.com.objects.CfgRole;
+import com.genesyslab.platform.applicationblocks.com.objects.CfgRoleMember;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgServer;
+import com.genesyslab.platform.applicationblocks.com.objects.CfgSkill;
+import com.genesyslab.platform.applicationblocks.com.objects.CfgSkillLevel;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgTableAccess;
 import com.genesyslab.platform.applicationblocks.com.queries.CfgAccessGroupQuery;
 import com.genesyslab.platform.applicationblocks.com.queries.CfgAgentGroupQuery;
@@ -44,6 +53,9 @@ import com.genesyslab.platform.applicationblocks.com.queries.CfgDNQuery;
 import com.genesyslab.platform.applicationblocks.com.queries.CfgFieldQuery;
 import com.genesyslab.platform.applicationblocks.com.queries.CfgFormatQuery;
 import com.genesyslab.platform.applicationblocks.com.queries.CfgPersonQuery;
+import com.genesyslab.platform.applicationblocks.com.queries.CfgPlaceQuery;
+import com.genesyslab.platform.applicationblocks.com.queries.CfgRoleQuery;
+import com.genesyslab.platform.applicationblocks.com.queries.CfgSkillQuery;
 import com.genesyslab.platform.applicationblocks.com.queries.CfgTableAccessQuery;
 import com.genesyslab.platform.applicationblocks.warmstandby.WarmStandbyConfiguration;
 import com.genesyslab.platform.applicationblocks.warmstandby.WarmStandbyService;
@@ -62,6 +74,7 @@ import com.genesyslab.platform.configuration.protocol.types.CfgFlag;
 import com.genesyslab.platform.configuration.protocol.types.CfgObjectState;
 import com.genesyslab.platform.configuration.protocol.types.CfgObjectType;
 import com.genesyslab.platform.configuration.protocol.types.CfgTableType;
+
 import com.testing.App;
 
 import io.netty.util.collection.IntCollections;
@@ -196,25 +209,25 @@ public class Genesys {
 		return (ArrayList<ObjCfgFields>) results;
 	}
 
-	public void GetAllFormat() throws Exception {
-		if(protocol.getState() != null) {
-			 CfgFormatQuery cfgFormatQ = new CfgFormatQuery();
-			 Collection<CfgFormat> cfgFormatList = confService.retrieveMultipleObjects(CfgFormat.class, cfgFormatQ);
-			 Iterator<CfgFormat>iListApps = cfgFormatList.iterator();
-			 while (iListApps.hasNext()) {
-				 CfgFormat item = iListApps.next();
-//				 System.out.println(item.getName() +", ObjectID : "+item.getObjectDbid()+", ObjType : " + item.getObjectType().ordinal());
-				 System.out.println(item.getName());
-//				 KeyValueCollection kvColl = item.getUserProperties();
-//				 System.out.println(kvColl.toString());
-				 
-				 
-			 }
-			 
-		  } else {
-		  	throw new Exception("Genesys protocol is closed!");
-		  }// TODO
-	}
+//	public void GetAllFormat() throws Exception {
+//		if(protocol.getState() != null) {
+//			 CfgFormatQuery cfgFormatQ = new CfgFormatQuery();
+//			 Collection<CfgFormat> cfgFormatList = confService.retrieveMultipleObjects(CfgFormat.class, cfgFormatQ);
+//			 Iterator<CfgFormat>iListApps = cfgFormatList.iterator();
+//			 while (iListApps.hasNext()) {
+//				 CfgFormat item = iListApps.next();
+////				 System.out.println(item.getName() +", ObjectID : "+item.getObjectDbid()+", ObjType : " + item.getObjectType().ordinal());
+//				 System.out.println(item.getName());
+////				 KeyValueCollection kvColl = item.getUserProperties();
+////				 System.out.println(kvColl.toString());
+//				 
+//				 
+//			 }
+//			 
+//		  } else {
+//		  	throw new Exception("Genesys protocol is closed!");
+//		  }// TODO
+//	}
 	
 	public void GetAccessGroup() throws Exception {
 		if(protocol.getState() != null) {
@@ -225,6 +238,8 @@ public class Genesys {
 				 CfgAccessGroup item = iListApps.next();
 				 System.out.println("Iterator : "+item.getGroupInfo().getName());
 //				 item.getGroupInfo().
+//				 System.out.println("Iterator : "+item.g);
+//				 CfgAgentInfo test = item.
 			 }
 			 
 		  } else {
@@ -252,7 +267,7 @@ public class Genesys {
 			 Iterator<CfgPerson>iListApps = cfgPersonsList.iterator();
 			 while (iListApps.hasNext()) {
 				 CfgPerson item = iListApps.next();
-				 System.out.println("Iterator : "+item.toString());
+				 System.out.println("Iterator : "+item.getFirstName()+ " "+ item.getLastName());
 			 }
 			 
 		  } else {
@@ -299,9 +314,7 @@ public class Genesys {
 	
 	public CfgFormat CreateNewFormat(Genesys mainApp, String name, String description, Collection<Integer> filedsIds, String AccessGroupName) throws Exception {
 		CfgFormat result=null;
-		 
-		
-		
+
 		if(protocol.getState() != null) {
 			
 //			 CfgField cfgField = new CfgField(confService);
@@ -462,8 +475,6 @@ public class Genesys {
 //			 cfgField = confService.retrieveObject(CfgField.class, cfgFieldQ);
 //			 fieldDBID = cfgField.getDBID();
 //			 filedsIds.add(fieldDBID);
-			
-			
 			CfgFormat cfgFormat = new CfgFormat(confService);
         	cfgFormat.setName(name);
         	cfgFormat.setDescription(description);
@@ -497,20 +508,35 @@ public class Genesys {
 		  }
 		return formatObj;
 	}
-    public void UpdateFormat(Genesys mainApp,int formatID, String name, String description, Collection<Integer> filedsIds) throws Exception {
+	public CfgFormat getFormatByName(String FormatName) throws Exception {
+		CfgFormat formatObj = null;
+		if(protocol.getState() != null) {
+			 CfgFormatQuery cfgFormatQ = new CfgFormatQuery();
+			 cfgFormatQ.setName(FormatName);
+			 formatObj = confService.retrieveObject(CfgFormat.class, cfgFormatQ);
+		  } else {
+		  	throw new Exception("Genesys protocol is closed!");
+		  }
+		return formatObj;
+	}
+    public void UpdateFormat(Genesys mainApp,int formatID, String name, String descFormat, Collection<Integer> filedsIds) throws Exception {
     	
     	if(protocol.getState() != null) {
             try
             {
+            	System.out.println("########### UPDATE FORMAT 1 ######## Katro");
             	CfgFormatQuery formatQ = new CfgFormatQuery();
-            	formatQ.setDbid(formatID);
+            	formatQ.setName(name);
             	CfgFormat FormatFromQ = confService.retrieveObject(formatQ);
-            	FormatFromQ.setName(name);
-            	FormatFromQ.setDescription(description);
+//            	FormatFromQ.setName(name);
+            	FormatFromQ.setDescription(descFormat);
+            	System.out.println("########### UPDATE FORMAT 2 ######## Query dan Update data");
             	FormatFromQ.setTenantDBID(1);
             	FormatFromQ.setState(CfgObjectState.CFGEnabled);
+            	System.out.println("########### UPDATE FORMAT 3 ######## Mulai masukan Fields "+ filedsIds.size());
             	FormatFromQ.setFieldDBIDs(filedsIds);
             	FormatFromQ.save();
+            	System.out.println("########### UPDATE FORMAT 4 ######## Berhasil di save");
             }
             catch (Exception e)
             {
@@ -527,21 +553,29 @@ public class Genesys {
     	if(protocol.getState() != null) {
             try
             {
+            	System.out.println("########### UPDATE FORMAT 1 ######## Awal");
             	CfgFormatQuery formatQ = new CfgFormatQuery();
-            	formatQ.setDbid(formatID);
+//            	formatQ.setDbid(formatID);
+            	
+            	formatQ.setName(name);
             	FormatFromQ = confService.retrieveObject(formatQ);
-            	FormatFromQ.setName(name);
+            	Collection<CfgField> collLastField = FormatFromQ.getFields();
+//            	FormatFromQ.setName(name);
+            	System.out.println("########### UPDATE FORMAT 2 ######## Query data : "+FormatFromQ.getName());
             	FormatFromQ.setDescription(description);
-            	FormatFromQ.setTenantDBID(1);
-            	FormatFromQ.setState(CfgObjectState.CFGEnabled);
+            	
+            	
+//            	FormatFromQ.getFields().clear();
+            	FormatFromQ.getFields().removeAll(collLastField);
+            	System.out.println("########### UPDATE FORMAT 3 ######## Clear Fields");
             	FormatFromQ.setFieldDBIDs(filedsIds);
-            	CfgAccessGroup cfgAccGroup = GetAccessGroupByName(AccessGroupName);
-            	FormatFromQ.setAccountPermissions(cfgAccGroup, 127);
+            	System.out.println("########### UPDATE FORMAT 4 ######## Add Fields");
             	FormatFromQ.save();
+            	System.out.println("########### UPDATE FORMAT 5 ######## Berhasil di save");
             }
             catch (Exception e)
             {
-                System.out.println("Exception Create campaign : "+e.getMessage());
+                System.out.println("Exception Update format : "+e.getMessage());
             }
      } else {
     	 throw new Exception("Genesys protocol is closed!");
@@ -568,7 +602,49 @@ public class Genesys {
      }
 }
 	
+    public void getAllFormat() throws Exception, InterruptedException {
+    	if(protocol.getState() != null) {
+			CfgFormatQuery cfgFmtQ = new CfgFormatQuery();
+        	Collection<CfgFormat> ccfgFmtColl = confService.retrieveMultipleObjects(CfgFormat.class,cfgFmtQ);
+			 Iterator<CfgFormat>iListApps = ccfgFmtColl.iterator();
+			 while (iListApps.hasNext()) {
+				 CfgFormat cfgFmtitem = iListApps.next();
+//				 String prefixDAP =cfgAppitem.getName().substring(0, 3); 
+				 System.out.println("Format ID :"+cfgFmtitem.getDBID()+"\nFormat Name :" +cfgFmtitem.getName());
+				 System.out.println("Format Desc :"+cfgFmtitem.getDescription());
+				 Collection<CfgField> collField = cfgFmtitem.getFields();
+				 System.out.print("Format Fields : ");
+				 for (CfgField cfgField : collField) {
+					System.out.print(cfgField.getDBID()+",");
+				 }
+				 System.out.println("");
+				 System.out.println("#############################################################################");
+			 }
+			 
+		  } else {
+		  	throw new Exception("Genesys protocol is closed!");
+		  }// TODO
+    }
 	
+    public void getAllSkill() throws Exception, InterruptedException {
+    	if(protocol.getState() != null) {
+			CfgSkillQuery cfgFmtQ = new CfgSkillQuery();
+        	Collection<CfgSkill> ccfgFmtColl = confService.retrieveMultipleObjects(CfgSkill.class,cfgFmtQ);
+//			 Iterator<CfgSkill>iListApps = ccfgFmtColl.iterator();
+//			 while (iListApps.hasNext()) {
+//				 CfgSkill cfgFmtitem = iListApps.next();
+//				 System.out.println("Skill ID :"+cfgFmtitem.getDBID()+"\nSkill Name :" +cfgFmtitem.getName());
+//				
+//				 System.out.println("");
+//				 System.out.println("#############################################################################");
+//			 }
+        	System.out.println(ccfgFmtColl.size());
+			 
+		  } else {
+		  	throw new Exception("Genesys protocol is closed!");
+		  }// TODO
+    }
+    
 	public CfgCallingList CreateNewCallingList(Genesys mainApp, String name, String description,String TbAccess, String AccessGroupName) throws Exception {
 		CfgCallingList result = null;
 		if(protocol.getState() != null) {
@@ -610,7 +686,33 @@ public class Genesys {
 		}
 		return result;
 	}
+	public CfgCallingList CreateNewCallingList(Genesys mainApp, String name, String description,String TbAccess, String AccessGroupName, String StartFrom, String EndTo, CfgTableAccess cfgTableAccess) throws Exception {
+		CfgCallingList result = null;
+		if(protocol.getState() != null) {
+			CfgCallingList cfgCallingList = new CfgCallingList(confService);
+			cfgCallingList.setName(name);
+			cfgCallingList.setDescription(description);
+			cfgCallingList.setTenantDBID(1);
+			cfgCallingList.setState(CfgObjectState.CFGEnabled);
+			Integer startFromTime = timeToDecimal(StartFrom);
+			Integer EndToTime = timeToDecimal(EndTo);
+			cfgCallingList.setTimeFrom(startFromTime);
+			cfgCallingList.setTimeUntil(EndToTime);
+//			CfgTableAccess tableAcces = getTableAccessByname(TbAccess);
+			cfgCallingList.setTableAccess(cfgTableAccess);
+			cfgCallingList.save();
+			result = getCallingListByNameUpdateAccessGroup(name, AccessGroupName, cfgTableAccess);
+			
+		} else {
+		  	throw new Exception("Genesys protocol is closed!");
+		}
+		return result;
+	}
 
+	
+	
+	
+	
 	public void GetAllCallingList() throws Exception {
 		if(protocol.getState() != null) {
 			CfgCallingListQuery cfgAppQ = new CfgCallingListQuery();
@@ -632,7 +734,7 @@ public class Genesys {
 		  	throw new Exception("Genesys protocol is closed!");
 		  }// TODO
 	}
-	public CfgCallingList UpdateCallingList(Genesys mainApp, Integer callinglistID,String name, String description,String TbAccess, String AccessGroupName) throws Exception {
+	public CfgCallingList UpdateCallingList(Genesys mainApp, Integer callinglistID,String name, String description,String TbAccess, String StartFrom, String EndTo, String AccessGroupName) throws Exception {
 		CfgCallingList CallingListFromQ = null;
 		if(protocol.getState() != null) {
             try
@@ -642,11 +744,14 @@ public class Genesys {
             	CallingListFromQ = confService.retrieveObject(callinglistQ);
             	CallingListFromQ.setName(name);
             	CallingListFromQ.setDescription(description);
-            	CallingListFromQ.setTenantDBID(1);
-            	CallingListFromQ.setState(CfgObjectState.CFGEnabled);
-            	
-            	CfgAccessGroup cfgAccGroup = GetAccessGroupByName(AccessGroupName);
-            	CallingListFromQ.setAccountPermissions(cfgAccGroup, 127);
+//            	CallingListFromQ.setTenantDBID(1);
+//            	CallingListFromQ.setState(CfgObjectState.CFGEnabled);
+            	Integer startFromTime = timeToDecimal(StartFrom);
+    			Integer EndToTime = timeToDecimal(EndTo);
+    			CallingListFromQ.setTimeFrom(startFromTime);
+    			CallingListFromQ.setTimeUntil(EndToTime);
+//            	CfgAccessGroup cfgAccGroup = GetAccessGroupByName(AccessGroupName);
+//            	CallingListFromQ.setAccountPermissions(cfgAccGroup, 127);
             	CallingListFromQ.save();
             }
             catch (Exception e)
@@ -667,6 +772,21 @@ public class Genesys {
 			callingListQ.setName(callingListName);
 			callingListObj = confService.retrieveObject(CfgCallingList.class, callingListQ);
 			 CfgAccessGroup cfgAccGroup = GetAccessGroupByName(AccessGroupName);
+			 callingListObj.setAccountPermissions(cfgAccGroup, 127);
+			 callingListObj.save();
+		  } else {
+		  	throw new Exception("Genesys protocol is closed!");
+		  }
+		return callingListObj;
+	}
+	public CfgCallingList getCallingListByNameUpdateAccessGroup(String callingListName, String AccessGroupName, CfgTableAccess cfgTableAccess) throws Exception {
+		CfgCallingList callingListObj = null;
+		if(protocol.getState() != null) {
+			CfgCallingListQuery callingListQ = new CfgCallingListQuery();
+			callingListQ.setName(callingListName);
+			callingListObj = confService.retrieveObject(CfgCallingList.class, callingListQ);
+			 CfgAccessGroup cfgAccGroup = GetAccessGroupByName(AccessGroupName);
+			 callingListObj.setTableAccess(cfgTableAccess);
 			 callingListObj.setAccountPermissions(cfgAccGroup, 127);
 			 callingListObj.save();
 		  } else {
@@ -737,28 +857,7 @@ public class Genesys {
      }
 	}
 	
-//	public CfgCampaign CreateNewCampaign(Genesys mainApp, String name, String description,String CallingListName, String AccessGroupName) throws Exception {
-//		CfgCampaign result = null;
-//		if(protocol.getState() != null) {
-//			CfgCampaign cfgCampaign = new CfgCampaign(confService);
-//			cfgCampaign.setName(name);
-//			cfgCampaign.setDescription(description);
-//			cfgCampaign.setTenantDBID(1);
-//			cfgCampaign.setState(CfgObjectState.CFGEnabled);
-//
-//			
-//			CfgCallingList callingListByName = getCallingListByName(CallingListName);
-//			CfgCallingListInfo cinfo = new CfgCallingListInfo(confService,callingListByName);
-//			cinfo.setCallingListDBID(callingListByName.getObjectDbid());
-//			cfgCampaign.getCallingLists().add(cinfo);
-//			cfgCampaign.save();
-//			result = getCfgCampaignByNameUpdateAccessGroup(name, AccessGroupName);
-//		} else {
-//		  	throw new Exception("Genesys protocol is closed!");
-//		}
-//		return result;
-//	
-//	}
+
 	public CfgCampaign CreateNewCampaign(Genesys mainApp, String name, String description,String CallingListName, String AccessGroupName) throws Exception {
 		CfgCampaign result = null;
 		if(protocol.getState() != null) {
@@ -911,19 +1010,20 @@ public class Genesys {
             try
             {
             	CfgCampaignQuery campaignQ = new CfgCampaignQuery();
-            	campaignQ.setDbid(campaignID);
+//            	campaignQ.setDbid(campaignID);
+            	campaignQ.setName(name);
             	campaignFromQ = confService.retrieveObject(campaignQ);
             	campaignFromQ.setName(name);
             	campaignFromQ.setDescription(description);
-            	campaignFromQ.setTenantDBID(1);
-            	campaignFromQ.setState(CfgObjectState.CFGEnabled);
-            	CfgAccessGroup cfgAccGroup = GetAccessGroupByName(AccessGroupName);
-            	campaignFromQ.setAccountPermissions(cfgAccGroup, 127);
-            	CfgCallingListInfo callingListObj = getCallingListInfoByName(CallingListName);
-    			ArrayList<CfgCallingListInfo> cfgCallingListArray = new ArrayList<CfgCallingListInfo>();
-    			cfgCallingListArray.add(callingListObj);
-    			Collection<CfgCallingListInfo>callListArray = cfgCallingListArray;
-    			campaignFromQ.setCallingLists(callListArray);
+//            	campaignFromQ.setTenantDBID(1);
+//            	campaignFromQ.setState(CfgObjectState.CFGEnabled);
+//            	CfgAccessGroup cfgAccGroup = GetAccessGroupByName(AccessGroupName);
+//            	campaignFromQ.setAccountPermissions(cfgAccGroup, 127);
+//            	CfgCallingListInfo callingListObj = getCallingListInfoByName(CallingListName);
+//    			ArrayList<CfgCallingListInfo> cfgCallingListArray = new ArrayList<CfgCallingListInfo>();
+//    			cfgCallingListArray.add(callingListObj);
+//    			Collection<CfgCallingListInfo>callListArray = cfgCallingListArray;
+//    			campaignFromQ.setCallingLists(callListArray);
             	campaignFromQ.save();
             	
             	
@@ -939,6 +1039,44 @@ public class Genesys {
 		
 		return campaignFromQ;
 	}
+	public void DeleteCfgCampaign(int CfgCampaignID, String CfgCampName) throws Exception {
+		if(protocol.getState() != null) {
+            try
+            {
+            	CfgCampaignQuery cfgCampignQ = new CfgCampaignQuery();
+            	cfgCampignQ.setName(CfgCampName);
+            	CfgCampaign callingListFromQ = confService.retrieveObject(cfgCampignQ);
+            	callingListFromQ.delete();
+            }
+            catch (Exception e)
+            {
+                System.out.println("Exception Create campaign : "+e.getMessage());
+            }
+     } else {
+    	 throw new Exception("Genesys protocol is closed!");
+     	 
+     }
+	}
+	
+	public void DeleteCfgCampaignGroup(String CfgCampGropName) throws Exception {
+		if(protocol.getState() != null) {
+            try
+            {
+            	CfgCampaignGroupQuery cfgCampignQ = new CfgCampaignGroupQuery();
+            	cfgCampignQ.setName(CfgCampGropName);
+            	CfgCampaignGroup callingListFromQ = confService.retrieveObject(cfgCampignQ);
+            	callingListFromQ.delete();
+            }
+            catch (Exception e)
+            {
+                System.out.println("Exception Create campaign : "+e.getMessage());
+            }
+     } else {
+    	 throw new Exception("Genesys protocol is closed!");
+     	 
+     }
+	}
+	
 	
 
 	public void GetAllCampaign() throws Exception {
@@ -948,7 +1086,8 @@ public class Genesys {
 			 Iterator<CfgCampaign>iListApps = cfgTableAccessList.iterator();
 			 while (iListApps.hasNext()) {
 				 CfgCampaign item = iListApps.next();
-				 System.out.println("Iterator : "+item.getName());
+				 System.out.println("Campaign Name : "+item.getName());
+				 System.out.println("Description Name : "+item.getDescription());
 			 }
 			 
 		  } else {
@@ -971,14 +1110,6 @@ public class Genesys {
 		  	throw new Exception("Genesys protocol is closed!");
 		  }
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 	public void GetAllTableAccess() throws Exception {
 		if(protocol.getState() != null) {
 			 CfgTableAccessQuery cfgTableAccessQ = new CfgTableAccessQuery();
@@ -993,6 +1124,22 @@ public class Genesys {
 		  	throw new Exception("Genesys protocol is closed!");
 		  }// TODO
 	}
+	
+	public void GetAllRoles() throws Exception {
+		if(protocol.getState() != null) {
+			 CfgRoleQuery cfgTableAccessQ = new CfgRoleQuery();
+			 Collection<CfgRole> cfgTableAccessList = confService.retrieveMultipleObjects(CfgRole.class, cfgTableAccessQ);
+			 Iterator<CfgRole>iListApps = cfgTableAccessList.iterator();
+			 while (iListApps.hasNext()) {
+				 CfgRole item = iListApps.next();
+				 System.out.println("Iterator : "+item.toString());
+			 }
+			 
+		  } else {
+		  	throw new Exception("Genesys protocol is closed!");
+		  }// TODO
+	}
+	
 	public CfgTableAccess getTableAccessByname(String TableAccessName) throws Exception {
 		CfgTableAccess cfgTableAccess = null;
 		if(protocol.getState() != null) {
@@ -1096,14 +1243,14 @@ public class Genesys {
             	tableAccesstFromQ = confService.retrieveObject(tableAccessQ);
             	tableAccesstFromQ.setName(name);
             	tableAccesstFromQ.setDescription(description);
-            	tableAccesstFromQ.setTenantDBID(1);
-            	tableAccesstFromQ.setState(CfgObjectState.CFGEnabled);
-            	tableAccesstFromQ.setType(CfgTableType.CFGTTCallingList);
-            	tableAccesstFromQ.setDbAccessDBID(DbAccessId);
+//            	tableAccesstFromQ.setTenantDBID(1);
+//            	tableAccesstFromQ.setState(CfgObjectState.CFGEnabled);
+//            	tableAccesstFromQ.setType(CfgTableType.CFGTTCallingList);
+//            	tableAccesstFromQ.setDbAccessDBID(DbAccessId);
             	tableAccesstFromQ.setFormatDBID(FormatId);
-            	tableAccesstFromQ.setDbTableName(DbTableName);
-            	CfgAccessGroup cfgAccGroup = GetAccessGroupByName(AccessGroupName);
-            	tableAccesstFromQ.setAccountPermissions(cfgAccGroup, 127);
+//            	tableAccesstFromQ.setDbTableName(DbTableName);
+//            	CfgAccessGroup cfgAccGroup = GetAccessGroupByName(AccessGroupName);
+//            	tableAccesstFromQ.setAccountPermissions(cfgAccGroup, 127);
     			tableAccesstFromQ.save();
             }
             catch (Exception e)
@@ -1117,7 +1264,7 @@ public class Genesys {
 		return tableAccesstFromQ;
   }
 	
-	public void DeleteTableAccess(Genesys mainApp,int tableAccessID) throws Exception {
+	public void DeleteTableAccess(int tableAccessID) throws Exception {
 		if(protocol.getState() != null) {
             try
             {
@@ -1195,7 +1342,265 @@ public class Genesys {
 		  }// TODO
 		return result;
 	}
+	public void getAllPersons() throws Exception {
+		if(protocol.getState() != null) {
+			CfgPersonQuery cfgPrsQ = new CfgPersonQuery();
+			
+//			CfgCallingListQuery cfgAppQ = new CfgCallingListQuery();
+        	Collection<CfgPerson> cfgPersons = confService.retrieveMultipleObjects(CfgPerson.class,cfgPrsQ);
+			 Iterator<CfgPerson>iListPers = cfgPersons.iterator();
+			 while (iListPers.hasNext()) {
+				 CfgPerson cfgPersonItem = iListPers.next();
+				 
+				 System.out.println("Person ID :"+cfgPersonItem.getDBID() + "\nPerson Username : "+cfgPersonItem.getUserName());
+				 System.out.println("##########################################");
+			 }
+		  } else {
+		  	throw new Exception("Genesys protocol is closed!");
+		  }// TODO
+	}
 	
+	
+	public void getAllPlaces() throws Exception {
+		if(protocol.getState() != null) {
+			 CfgPlaceQuery cfgPlaceQ = new CfgPlaceQuery();
+			 Collection<CfgPlace> cfgPlaceList = confService.retrieveMultipleObjects(CfgPlace.class, cfgPlaceQ);
+			 Iterator<CfgPlace>iListApps = cfgPlaceList.iterator();
+			 while (iListApps.hasNext()) {
+				 CfgPlace item = iListApps.next();
+				 System.out.println("Iterator Place : "+item);
+			 }
+			 
+		  } else {
+		  	throw new Exception("Genesys protocol is closed!");
+		  }// TODO
+	}
+	
+	
+public CfgPerson CreateNewPerson(String Username, String ExternalID, String FirstName, String LastName, Boolean isAgent, String password, String EmailAddress, String EmployeeID) throws Exception {
+		CfgPerson result = null;
+		if(protocol.getState() != null) {
+			try {
+				result = new CfgPerson(confService);
+					
+				result.setUserName(Username);
+				result.setExternalID(ExternalID);
+				result.setFirstName(ExternalID);
+				result.setEmailAddress(EmailAddress);
+				result.setLastName(LastName);
+				result.setEmployeeID(EmployeeID);
+//				cfgCampaign.setAddress(CfgAddress);
+				if(isAgent == true) {
+					result.setIsAgent(CfgFlag.CFGTrue);
+				} else {
+					result.setIsAgent(CfgFlag.CFGFalse);
+				}
+				
+				result.setPassword(password);
+//				cfgPerson.setPhones(value);
+				result.setState(CfgObjectState.CFGEnabled);
+				result.setTenantDBID(1);
+				
+//				result.set
+//				CfgAccessGroup cfgAccGroup = GetAccessGroupByName(AccessGroupName);
+//				result.setAccountPermissions(cfgAccGroup, 127);
+				result.save();
+				System.out.println("##### Person di save ####### : ");
+			} catch (Exception e) {
+				System.out.println("##### ERROR ####### : "+e.getMessage());
+				throw new Exception(e.getMessage());
+			}
+            
+		} else {
+			mylog.log(Level.WARNING,"Error Genesys");
+		  	throw new Exception("Genesys protocol is closed!");
+		}
+		
+		return result;
+	}
+
+
+
+public CfgPerson getPersonByNameUpdateAccessGroup(int dbid, String AccessGroupName) throws Exception {
+	CfgPerson personObj = null;
+	if(protocol.getState() != null) {
+		 CfgPersonQuery cfgPersonQ = new CfgPersonQuery();
+		 cfgPersonQ.setDbid(dbid);
+		 personObj = confService.retrieveObject(CfgPerson.class, cfgPersonQ);
+		 CfgAccessGroup cfgAccGroup = GetAccessGroupByName(AccessGroupName);
+		 personObj.setAccountPermissions(cfgAccGroup, 127);
+		 personObj.save();
+	  } else {
+	  	throw new Exception("Genesys protocol is closed!");
+	  }
+	return personObj;
+}
+
+
+public CfgPerson getPersonsById(int idPerson) throws Exception {
+	CfgPerson cfgPerson = null;
+	if(protocol.getState() != null) {
+		CfgPersonQuery cfgPersonQ = new CfgPersonQuery();
+		cfgPersonQ.setDbid(idPerson);
+		 cfgPerson = confService.retrieveObject(CfgPerson.class, cfgPersonQ);
+	  } else {
+	  	throw new Exception("Genesys protocol is closed!");
+	  }
+	return cfgPerson;
+}
+
+public CfgPerson CreateNewPersonSkill(String userName, String skillName) throws Exception {
+	CfgPerson result = null;
+	if(protocol.getState() != null) {
+		CfgPersonQuery cfgPersonQ = new CfgPersonQuery();
+		cfgPersonQ.setUserName(userName);
+		result = confService.retrieveObject(CfgPerson.class, cfgPersonQ);
+		
+		CfgSkillQuery skillQ = new CfgSkillQuery();
+		skillQ.setName(skillName);
+		CfgSkill skillFromQuery = confService.retrieveObject(CfgSkill.class, skillQ);
+		int skillLevel = new Random().nextInt(10);
+        Boolean found = false;
+        for (CfgSkillLevel csl  : result.getAgentInfo().getSkillLevels()) {
+        	 if (csl.getSkill().getName().equalsIgnoreCase(skillQ.getName()))
+             {
+                 csl.setLevel(skillLevel);
+                 found = true;
+                 break;
+             }
+		}
+        if (!found)
+        {
+            CfgSkillLevel cfgSkillLevel = new CfgSkillLevel(confService, result);
+            cfgSkillLevel.setSkill(skillFromQuery);
+            cfgSkillLevel.setLevel(skillLevel);
+            result.getAgentInfo().getSkillLevels().add(cfgSkillLevel);
+        }
+        result.save();
+		
+	  } else {
+	  	throw new Exception("Genesys protocol is closed!");
+	  }
+	return result;
+}
+
+public CfgRole addUserToRoleByRoleName(CfgPerson person, String roleName, String AccessGroupName) throws Exception {
+		CfgRole result = null;
+		if(protocol.getState() != null) {
+			try {
+				
+				
+//				CfgPersonQuery queryperson = new CfgPersonQuery(confService);
+//                queryperson.UserName = "prabuadam";
+//                CfgPerson person = confService.RetrieveObject<CfgPerson>(queryperson);
+//
+//                CfgRoleMember cfgRoleMember = new CfgRoleMember(confService, person);
+//                cfgRoleMember.ObjectDBID = person.DBID;
+//                cfgRoleMember.ObjectType = person.ObjectType;
+//
+//                CfgRoleQuery queryRole = new CfgRoleQuery(confService);
+//                queryRole.Name = "AgentRoles";
+//                CfgRole role = confService.RetrieveObject<CfgRole>(queryRole);
+//
+//                role.Members.Add(cfgRoleMember);
+//                
+//                role.Save();
+//				
+				
+				
+				
+				
+				result = new CfgRole(confService);
+				CfgRoleQuery cfgRoleQ = new CfgRoleQuery();
+				cfgRoleQ.setName(roleName);
+				result = confService.retrieveObject(CfgRole.class, cfgRoleQ);	
+				
+				CfgRoleMember roleMember = new CfgRoleMember(confService, result);
+				roleMember.setObjectDBID(person.getDBID());
+				roleMember.setObjectType(person.getObjectType());
+				
+//				Collection<CfgRoleMember> rolemembers =  result.getMembers();
+//				rolemembers.add(roleMember);
+//				result.setMembers(rolemembers);
+				
+				result.getMembers().add(roleMember);
+				
+				result.save();
+			} catch (Exception e) {
+				System.out.println("##### ERROR ####### : "+e.getMessage());
+				throw new Exception(e.getMessage());
+			}
+            
+		} else {
+			mylog.log(Level.WARNING,"Error Genesys");
+		  	throw new Exception("Genesys protocol is closed!");
+		}
+		return result;
+	}
+
+
+
+
+
+
+public CfgAgentInfo getAgentInfofromPersons(int idPerson) throws Exception {
+	CfgAgentInfo cfgAgentInfo = null;
+	CfgPerson cfgPerson = null;
+	
+	if(protocol.getState() != null) {
+//		CfgAgentInfo cfgTableAccessQ = new CfgPersonQuery();
+		CfgPersonQuery cfgTableAccessQ = new CfgPersonQuery();
+		 cfgTableAccessQ.setDbid(idPerson);
+		 cfgPerson = confService.retrieveObject(CfgPerson.class, cfgTableAccessQ);
+		 cfgAgentInfo = cfgPerson.getAgentInfo();
+		 
+//		 cfgAgentInfo.setSkillLevels(value);
+		 
+		 
+//		 cfgAgentInfo.setSkillLevels);
+		 
+				 
+//		 cfgTableAccessQ.setDbid(idPerson);
+//		 cfgPerson = confService.retrieveObject(CfgPerson.class, cfgTableAccessQ);
+	  } else {
+	  	throw new Exception("Genesys protocol is closed!");
+	  }
+	return cfgAgentInfo;
+}
+
+
+
+
+
+
+
+public CfgSkill addUserToSkillBySkillName(String SkillName, CfgPerson cfgPerson) throws Exception {
+	CfgSkill result = null;
+	if(protocol.getState() != null) {
+		try {
+			result = new CfgSkill(confService);
+			CfgSkillQuery cfgSkillQ = new CfgSkillQuery();
+			cfgSkillQ.setName(SkillName);
+			result = confService.retrieveObject(CfgSkill.class, cfgSkillQ);	
+			
+//			result.set
+			CfgAgentInfo agentInfo  = getAgentInfofromPersons(cfgPerson.getDBID());
+//			CfgAccessGroup cfgAccGroup = GetAccessGroupByName(AccessGroupName);
+//			result.set
+			result.setAccountPermissions(cfgPerson, 127);
+			result.save();
+//			re
+		} catch (Exception e) {
+			System.out.println("##### ERROR ####### : "+e.getMessage());
+			throw new Exception(e.getMessage());
+		}
+        
+	} else {
+		mylog.log(Level.WARNING,"Error Genesys");
+	  	throw new Exception("Genesys protocol is closed!");
+	}
+	return result;
+}
 	
 //########################################################################################################################	
 	public String getHost() {
@@ -1259,6 +1664,10 @@ public class Genesys {
 		this.confService = confService;
 	}
 
+	
+	
+	
+	
 	public String getLocalUser() {
 		return localUser;
 	}
