@@ -166,7 +166,7 @@ public class Genesys {
 			 CfgFieldQuery cfgFieldQ = new CfgFieldQuery();
 			 Collection<CfgField> cfgFieldList = confService.retrieveMultipleObjects(CfgField.class, cfgFieldQ);
 	           int i =0;
-			 Iterator<CfgField>iListApps = cfgFieldList.iterator();
+			Iterator<CfgField>iListApps = cfgFieldList.iterator();
           	  while (iListApps.hasNext()) {
           		CfgField item = iListApps.next();
           		System.out.println("DBID : "+item.getDBID()+", Value : "+item.getName());
