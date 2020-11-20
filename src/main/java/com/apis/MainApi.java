@@ -9,10 +9,12 @@ import com.apis.controller.Genesys;
 import com.apis.objects.ObjCfgFields;
 import com.genesyslab.platform.applicationblocks.com.IConfService;
 import com.genesyslab.platform.applicationblocks.com.Subscription;
+import com.genesyslab.platform.applicationblocks.com.objects.CfgAccessGroup;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgCallingList;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgCallingListInfo;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgCampaign;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgFormat;
+import com.genesyslab.platform.applicationblocks.com.objects.CfgID;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgPerson;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgRole;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgTableAccess;
@@ -131,7 +133,8 @@ public class MainApi {
 //	        	CfgPerson result=  apiGen.CreateNewPerson("Memet2.Gorbacep", "mmt2@gmail.com", "Memet1", "Asep", true, "manage","mmt2@gmail.com", "100098870");
 //	        	apiGen.getAllPersons(); 
 //	        	135
-//	        	CfgPerson result = apiGen.GetPerson(136);
+	        	try {
+	        	CfgPerson result = apiGen.GetPerson(133);
 //	        	System.out.println("############################### "+ result.getUserName());
 	        	
 //	        	CfgRole resultRole = apiGen.addUserToRoleByRoleName(result, "Supervisor", ""); //Karena sudah di lakukan sebelumnya harusnya
@@ -139,12 +142,29 @@ public class MainApi {
 //	        	CfgPerson result3 = apiGen.CreateNewPersonSkill(result.getUserName(), "[Nama Skill]");//Skill tanya2 om Husain
 //	        	
 //	        	System.out.println("############################### "+ result.getDBID());
-//	        	CfgPerson result2 = apiGen.getPersonByNameUpdateAccessGroup(result.getDBID(), "INS_Cigna");
 	        	
-//	        	System.out.println("############################### "+ result2.getDBID());
+//	        		CfgPerson result2 = apiGen.getPersonByNameUpdateAccessGroup(result.getDBID(), "INS_AIA");
+	        	
+	        	
+	        		CfgAccessGroup accGrp = apiGen.GetAccessGroupByName("INS_AIA");
+	        		
+//	        		CfgID dbidObj = new Cfg;
+	        		
+//	        		accGrp.getMemberIDs().add(result.getDBID());
+	        	
+	        	
+	        	
+//	        		System.out.println("############################### "+ result2.getDBID());
+				} catch (Exception e) {
+					// TODO: handle exception
+					System.out.println("Error "+ e.getMessage());
+				}
+	        	
+	        	
+	        	
 	        	
 //	        	apiGen.GetAllRoles();
-	        	apiGen.GetAllAgentGroup();
+//	        	apiGen.GetAllAgentGroup();
 	        	
 	            apiGen.disConnectProtocl(protocol);
 		     } else {

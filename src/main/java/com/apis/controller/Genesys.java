@@ -236,7 +236,7 @@ public class Genesys {
 			 Iterator<CfgAccessGroup>iListApps = cfgAccessGroupList.iterator();
 			 while (iListApps.hasNext()) {
 				 CfgAccessGroup item = iListApps.next();
-				 System.out.println("Iterator : "+item.getGroupInfo().getName());
+				 System.out.println("Iterator : "+item.toString());
 //				 item.getGroupInfo().
 //				 System.out.println("Iterator : "+item.g);
 //				 CfgAgentInfo test = item.
@@ -1385,7 +1385,7 @@ public CfgPerson CreateNewPerson(String Username, String ExternalID, String Firs
 					
 				result.setUserName(Username);
 				result.setExternalID(ExternalID);
-				result.setFirstName(ExternalID);
+				result.setFirstName(FirstName);
 				result.setEmailAddress(EmailAddress);
 				result.setLastName(LastName);
 				result.setEmployeeID(EmployeeID);
@@ -1428,6 +1428,7 @@ public CfgPerson getPersonByNameUpdateAccessGroup(int dbid, String AccessGroupNa
 		 cfgPersonQ.setDbid(dbid);
 		 personObj = confService.retrieveObject(CfgPerson.class, cfgPersonQ);
 		 CfgAccessGroup cfgAccGroup = GetAccessGroupByName(AccessGroupName);
+//		 System.out.println("########### "+ cfgAccGroup.getMemberIDs().toString());
 		 personObj.setAccountPermissions(cfgAccGroup, 127);
 		 personObj.save();
 	  } else {
