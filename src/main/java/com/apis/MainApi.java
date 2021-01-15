@@ -10,6 +10,8 @@ import com.apis.objects.ObjCfgFields;
 import com.genesyslab.platform.applicationblocks.com.IConfService;
 import com.genesyslab.platform.applicationblocks.com.Subscription;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgAccessGroup;
+import com.genesyslab.platform.applicationblocks.com.objects.CfgAgentGroup;
+import com.genesyslab.platform.applicationblocks.com.objects.CfgAgentLogin;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgCallingList;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgCallingListInfo;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgCampaign;
@@ -114,7 +116,7 @@ public class MainApi {
 	        	
 //	        	CfgFormat myFormat = apiGen.getFormatByNameUpdateAccessGroup("INS_CGN_9090.Format", "INS_Cigna");
 	        	
-//	        	apiGen.GetAccessGroup();
+	        	
 	        	
 //	        	ArrayList<ObjCfgFields> listFild = apiGen.GetAllFileds();
 //	        	apiGen.GetAllCallingList();
@@ -134,8 +136,30 @@ public class MainApi {
 //	        	apiGen.getAllPersons(); 
 //	        	135
 	        	try {
-	        	CfgPerson result = apiGen.GetPerson(133);
+	        		
+	        		apiGen.GetAccessGroup();
+//	        		apiGen.GetFolders();
+//	        		List<CfgAccessGroup> result = apiGen.GetAccessGroupByPrefix("INS");
+//	        		for (CfgAccessGroup cfgAccessGroup : result) {
+//	        			System.out.println(">>> : "+cfgAccessGroup.getGroupInfo().toString());
+//					}
+//	        		List<CfgPerson> result = apiGen.GetAccessGroupMembersByAccessGroupName("INS_AIA");
+//	        		for (CfgPerson cfgPerson : result) {
+//						System.out.println(">>>>>>>> "+cfgPerson.getUserName());
+//					}
+	        		
+//	        		CfgAccessGroup result = apiGen.addAccessGroup("CCC_01");
+//	        		
+//	        	CfgPerson result = apiGen.GetPerson(111);
 //	        	System.out.println("############################### "+ result.getUserName());
+//	        	CfgAccessGroup AccessGroup = apiGen.delUserToAccessGroupByName("KKK",result);
+//	        	CfgAgentGroup AgentGroup = apiGen.delUserToAgentGroupByName("CC", result);
+//	        	System.out.println("################################# \n"+AccessGroup);
+//	    	    System.out.println("################################# \n"+AgentGroup);
+	        	
+	        	
+//	        	CfgRole resultRole = apiGen.removeUserFromRoleByName(result, "Manager");
+	        	
 	        	
 //	        	CfgRole resultRole = apiGen.addUserToRoleByRoleName(result, "Supervisor", ""); //Karena sudah di lakukan sebelumnya harusnya
 	        	
@@ -143,18 +167,35 @@ public class MainApi {
 //	        	
 //	        	System.out.println("############################### "+ result.getDBID());
 	        	
-//	        		CfgPerson result2 = apiGen.getPersonByNameUpdateAccessGroup(result.getDBID(), "INS_AIA");
+//	        		CfgPerson result2 = apiGen.getPersonByIdUpdateAccessGroup(result.getDBID(), "INS_AIA");
 	        	
 	        	
-	        		CfgAccessGroup accGrp = apiGen.GetAccessGroupByName("INS_AIA");
+//	        		CfgAccessGroup accGrp = apiGen.GetAccessGroupByName("INS_AIA");
 	        		
 //	        		CfgID dbidObj = new Cfg;
 	        		
 //	        		accGrp.getMemberIDs().add(result.getDBID());
 	        	
-	        	
+//	        		List<CfgAgentLogin> result = apiGen.getAllAgentLogin();
 	        	
 //	        		System.out.println("############################### "+ result2.getDBID());
+	        	
+//	        		CfgAgentGroup resultAG = apiGen.addUserToAgentGroupByName(result,"INS");
+//	        		System.out.println("############################### "+ resultAG.toString());
+	        	
+//	        		Supervisor
+//	        		CfgRole removeUserFromRole = apiGen.removeUserFromRoleByRoleName(result, "Supervisor", ""); 
+//	        		System.out.println("############################### "+ removeUserFromRole.toString());
+	        	
+//	        		Thread.sleep(2000);
+	        	
+//		        	apiGen.GetAllRoles();
+//		        	apiGen.GetAllAgentGroup();
+//	        		Name Insurance Cigna 230320
+	        		
+//	        		apiGen.UpdateCallingList(apiGen, 102, "Name Insurance Cigna 230320", "Oncom", null, "11:30:00", "17:20:00", null);
+//	        		List<CfgPerson> results =
+//	        		apiGen.GetAllCallingList();
 				} catch (Exception e) {
 					// TODO: handle exception
 					System.out.println("Error "+ e.getMessage());
@@ -163,8 +204,7 @@ public class MainApi {
 	        	
 	        	
 	        	
-//	        	apiGen.GetAllRoles();
-//	        	apiGen.GetAllAgentGroup();
+
 	        	
 	            apiGen.disConnectProtocl(protocol);
 		     } else {

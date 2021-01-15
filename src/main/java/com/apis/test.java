@@ -6,9 +6,14 @@ import java.util.List;
 
 public class test {
 	public static void main(String[] args) {
-		int[] hasil = new test().howMany(10);
+//		int[] hasil = new test().howMany(10);
+//		
+//		System.out.println(Arrays.toString(hasil));
+		Integer cidIntLoop = 129;
+		Integer personId = 129;
 		
-		System.out.println(Arrays.toString(hasil));
+		System.out.println(cidIntLoop.equals(personId));
+		
 	}
 	
 	public int[] howMany(int akhir) {
