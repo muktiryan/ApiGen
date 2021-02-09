@@ -316,7 +316,6 @@ public class Genesys {
 			CfgAccessGroupQuery agQuery = new CfgAccessGroupQuery();
 			agQuery.setName(AccessGroupName);
 			CfgAccessGroup agQueryResult = confService.retrieveObject(CfgAccessGroup.class, agQuery);
-//			CfgID cID = new CfgID(confService, person);
 			Collection<CfgID> listObjOld = agQueryResult.getMemberIDs();
 			Collection<CfgID> listObjNew = new ArrayList<CfgID>();
 			for (CfgID cfgID : listObjOld) {
@@ -343,6 +342,9 @@ public class Genesys {
 		}
 		return result;
 	}
+	
+	
+	
 	public CfgAccessGroup updateAccessGroup(int dbid, String NewAccessGroupName) {
 		CfgAccessGroup agQueryResult = null;
 		try {
@@ -1191,9 +1193,23 @@ public class Genesys {
 			agQuery.setName(nameGroup);
 			CfgAgentGroup agQueryResult = confService.retrieveObject(CfgAgentGroup.class, agQuery);
 			CfgGroup agentGroupInfo = agQueryResult.getGroupInfo();
-			List<CfgPerson> listPerson = new ArrayList<CfgPerson>();
-			listPerson.add(person);
-			agentGroupInfo.setManagers(listPerson);
+			
+//			agentGroupInfo.getMan
+			Collection<Integer> oldManagerColl = agentGroupInfo.getManagerDBIDs();
+			List<Integer> oldManagerList = new ArrayList<Integer>();
+			if(oldManagerColl != null) {
+				if(oldManagerColl.size() > 0) {
+					for (Integer oldItem : oldManagerColl) {
+						oldManagerList.add(oldItem);
+					}
+				}
+			}
+			
+			
+			
+			oldManagerList.add(person.getDBID());
+
+			agentGroupInfo.setManagerDBIDs(oldManagerList);
 			agQueryResult.setGroupInfo(agentGroupInfo);
 			agQueryResult.save();
 			result = agQueryResult;
@@ -1201,26 +1217,37 @@ public class Genesys {
 			LOGGER.warning("Error "+e.getMessage());
 		}
 		return result;
-//		CfgAgentGroup result=null;
-//		try {
-//			result = new CfgAgentGroup(confService);
-//			CfgGroup groupInfo = new CfgGroup(confService,result);
-//			groupInfo.setName(nameGroup);
-//			groupInfo.setTenantDBID(1);
-//			
-//			List<CfgPerson> listPerson = new ArrayList<CfgPerson>();
-//			listPerson.add(person);
-//			groupInfo.setManagers(listPerson);
-//			
-//			result.setGroupInfo(groupInfo);
-//			result.save();
-//		return result;
-//		} catch (ConfigException e) {
-//			LOGGER.warning("Error "+e.getMessage());
-//		}
-//		return result;
-		
 	}
+	public CfgAgentGroup dellUserToSupervisorAgentGroup (String nameGroup,CfgPerson person) {
+		CfgAgentGroup result = new CfgAgentGroup(confService);
+		try {
+			CfgAgentGroupQuery agQuery = new CfgAgentGroupQuery();
+			agQuery.setName(nameGroup);
+			CfgAgentGroup agQueryResult = confService.retrieveObject(CfgAgentGroup.class, agQuery);
+			CfgGroup agentGroupInfo = agQueryResult.getGroupInfo();
+			Collection<Integer> oldManager = agentGroupInfo.getManagerDBIDs();
+			List<Integer> newManager = new ArrayList<Integer>();
+			for (Integer dbidOld : oldManager) {
+				if(dbidOld.equals(person.getDBID())) {
+					
+				}else {
+					newManager.add(dbidOld);
+				}
+			}
+			
+			agentGroupInfo.getManagerDBIDs().removeAll(oldManager);
+			agentGroupInfo.setManagerDBIDs(newManager);
+			agQueryResult.setGroupInfo(agentGroupInfo);
+			agQueryResult.save();
+			result = agQueryResult;
+		} catch (ConfigException e) {
+			LOGGER.warning("Error "+e.getMessage());
+		}
+		return result;
+	}
+	
+	
+	
 	
 	public CfgAgentGroup addAgentGroupWithFolder(String nameGroup, String folderName) {
 		try {
@@ -1290,6 +1317,29 @@ public class Genesys {
 		
 		return result;
 	}
+	
+	public CfgAgentGroup dellAccessGroupFromAgentGroup(String AgentGroupName, String AccessGroupName) throws Exception {
+		CfgAgentGroup result = null;
+		try {
+			CfgAgentGroupQuery agQuery = new CfgAgentGroupQuery();
+			agQuery.setName(AgentGroupName);
+			result = confService.retrieveObject(CfgAgentGroup.class, agQuery);
+			CfgAccessGroup cfgAccGroup = GetAccessGroupByName(AccessGroupName);
+//			result.setAccountPermissions(cfgAccGroup, 127);
+			result.setAccountPermissions(cfgAccGroup, 0);
+//			cfgAccessGroup.se
+			result.save();
+//			result.delete();
+		} catch (ConfigException e) {
+			LOGGER.warning("Error "+e.getMessage());
+		}
+		
+		return result;
+	}
+	
+	
+	
+	
 	
 	public CfgAgentGroup updateAgentGroup(int dbid, String NewAgentGroupName) {
 		CfgAgentGroup agQueryResult = null;

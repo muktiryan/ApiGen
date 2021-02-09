@@ -137,7 +137,7 @@ public class MainApi {
 //	        	135
 	        	try {
 	        		
-	        		apiGen.GetAccessGroup();
+//	        		apiGen.GetAccessGroup();
 //	        		apiGen.GetFolders();
 //	        		List<CfgAccessGroup> result = apiGen.GetAccessGroupByPrefix("INS");
 //	        		for (CfgAccessGroup cfgAccessGroup : result) {
@@ -196,6 +196,9 @@ public class MainApi {
 //	        		apiGen.UpdateCallingList(apiGen, 102, "Name Insurance Cigna 230320", "Oncom", null, "11:30:00", "17:20:00", null);
 //	        		List<CfgPerson> results =
 //	        		apiGen.GetAllCallingList();
+//	        		apiGen.updateAccessGroupToAgentGroup("INS", "INS_Cigna");
+//	        		CfgAgentGroup result = apiGen.dellAccessGroupFromAgentGroup("INS", "INS_Cigna");
+//	        		System.out.println("#################### done "+result.getGroupInfo().getName());
 				} catch (Exception e) {
 					// TODO: handle exception
 					System.out.println("Error "+ e.getMessage());
